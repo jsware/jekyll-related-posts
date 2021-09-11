@@ -1,0 +1,6 @@
+---
+title: "Post: Carrots - Vegetable - Orange"
+categories: root vegetable
+tags: orange
+---
+Carrots are vegetables. Typically orange.

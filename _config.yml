@@ -1,0 +1,49 @@
+# Site settings.
+title: jekyll-related-posts
+description: >-
+  jekyll-related-posts provides an _includes file and example _layout used to
+  identify related posts and pages. No custom plugin or jekyll lsi option is
+  needed, so it can be used with GitHub Pages.
+url: "https://www.jsware.io"
+baseurl: "/jekyll-related-posts" 
+twitter_username: JohnScottUK
+github_username: jsware
+google_analytics: UA-29106762-2
+
+# jekyll-related-posts settings.
+related_by: tags and categories
+related_limit: 6
+related_categories: 1
+related_tags: 1
+
+# Build settings.
+theme: minima
+header_pages:
+  - samples.markdown
+  - about.markdown
+permalink: date
+plugins:
+  - jekyll-feed
+
+# Additional collections to _posts.
+collections:
+  samples:
+    output: true
+    permalink: /samples/:title
+
+# Defaults for _posts, and _samples
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      related: true
+  # _samples
+  - scope:
+      path: ""
+      type: samples
+    values:
+      layout: page
+      related: true

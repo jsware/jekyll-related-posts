@@ -1,0 +1,112 @@
+{% comment %}
+<!--
+  MIT License
+
+  Copyright (c) 2021 John Scott.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+{% endcomment %}
+
+{% assign related_by = page.related_by | default: site.related_by | default: "default" %}
+{% if related_by.first != true %}{% assign related_by = related_by | split: " " %}{% endif %}
+{% assign related_limit = page.related_limit | default: site.related_limit | default: 4 %}
+{% assign related_from = page.related_from | default: site.related_from | default: documents %}
+{% assign related_categories = page.related_categories | default: site.related_categories | default: 1 %}
+{% assign related_tags = page.related_tags | default: site.related_tags | default: 1 %}
+{% assign related_template = page.related_template | default: site.related_template | default: "related-post.html" %}
+{% assign related_layout = page.related_layout | default: site.related_layout | default: "list" %}
+
+{% comment %}<!-- Random related pages -->{% endcomment %}
+{% if related_by contains "random" %}
+  {% comment %}<!-- We might sample current page so select one more just in case -->{% endcomment %}
+  {% assign related_limit = related_limit | plus: 1 %}
+  {% if related_from == "posts" %}
+    {% assign related_posts = site.posts | sample: related_limit %}
+  {% else %}
+    {% assign related_posts = site.documents | sample: related_limit %}
+  {% endif %}
+  {% assign related_limit = related_limit | minus: 1 %}
+
+{% comment %}<!-- Tag/category matching pages -->{% endcomment %}
+{% elsif related_by contains "categories" or related_by contains "tags" %}
+  {% assign related_posts = "" | split: " " %}
+
+  {% for doc in site.documents %}
+    {% if doc.id == page.id %}
+      {% continue %}
+    {% elsif related_from == "posts" and doc.collection != "posts" %}
+      {% continue %}
+    {% elsif related_from == "collection" and doc.collection != page.collection %}
+      {% continue %}
+    {% endif %}
+
+    {% assign related_category_count = 0 %}
+    {% if related_by contains "categories" %}
+      {% for cat in doc.categories %}
+        {% if page.categories contains cat %}
+          {% assign related_category_count = related_category_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% assign related_tag_count = 0 %}
+    {% if related_by contains "tags" %}
+      {% for tag in doc.tags %}
+        {% if page.tags contains tag %}
+          {% assign related_tag_count = related_tag_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if related_by contains "categories" and related_by contains "tags" %}
+      {% if related_by contains "or" %}
+        {% if related_category_count >= related_categories or related_tag_count >= related_tags %}
+          {% assign related_posts = related_posts | push: doc %}
+        {% endif %}
+      {% else %}
+        {% if related_category_count >= related_categories and related_tag_count >= related_tags %}
+          {% assign related_posts = related_posts | push: doc %}
+        {% endif %}
+      {% endif %}
+    {% elsif related_by contains "categories" and related_category_count >= related_categories %}
+      {% assign related_posts = related_posts | push: doc %}
+    {% elsif related_by contains "tags" and related_tag_count >= related_tags %}
+      {% assign related_posts = related_posts | push: doc %}
+    {% endif %}
+  {% endfor %}
+
+  {% assign related_posts = related_posts | sample: related_limit %}
+
+{% comment %}<!-- Use site.related_posts for posts if found -->{% endcomment %}
+{% elsif site.related_posts.size > 0 %}
+  {% assign related_posts = site.related_posts %}
+
+{% comment %}<!-- Otherwise show recent posts if no site.related_posts -->{% endcomment %}
+{% else %}
+  {% assign related_posts = site.posts %}
+{% endif %}
+
+{% for post in related_posts limit:related_limit %}
+  {% if post.id == page.id %}
+    {% continue %}
+  {% endif %}
+
+  {% include {{ related_template }} type=related_layout %}
+{% endfor %}

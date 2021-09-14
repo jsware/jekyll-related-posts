@@ -9,6 +9,7 @@ baseurl: "/jekyll-related-posts"
 twitter_username: JohnScottUK
 github_username: jsware
 google_analytics: UA-29106762-2
+locale: en_GB
 
 # jekyll-related-posts settings.
 related_by: tags and categories
@@ -24,6 +25,7 @@ header_pages:
 permalink: date
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
 
 # Additional collections to _posts.
 collections:
@@ -47,3 +49,11 @@ defaults:
     values:
       layout: page
       related: true
+
+compress_html:
+  clippings: []
+  comments: ["<!-- ", " -->"]
+  endings: []
+  ignore:
+    envs: [local]
+  blanklines: false

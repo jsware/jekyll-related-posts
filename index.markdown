@@ -6,7 +6,9 @@ Include a configurable set of related posts on a page that does not rely on cust
 
 The core of `jekyll-related-posts` is an `_includes` file called `related.html`. This file first generates and then iterates a related posts list based on your site `_config.yml` and page front matter.
 
-See [About]({{ site.baseurl}}{% link about.markdown %}) for further details, or explore the demonstration below...
+See [About]({{ site.baseurl}}{% link about.markdown %}) for further details and installation instructions
+
+Or explore the demonstration below first...
 
 This demonstration has site settings of:
 ```yaml

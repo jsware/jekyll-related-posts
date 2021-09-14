@@ -13,10 +13,11 @@ The core of `jekyll-related-posts` is an `_includes` file called `related.html`.
 
 ## Installation
 
+1. Head over to [jekyll-related-posts](https://github.com/jsware/jekyll-related-posts) and download the [`related.html`](https://github.com/jsware/jekyll-related-posts/blob/main/_includes/related.html) file.
 1. Copy the `related.html` file into your site `_includes` directory.
-2. Modify your `_config.yml` file to include `related_by`, `related_categories` and/or `related_tags` values. See below for available settings.
-3. Update the `_layout` used to include related posts to {% raw %}`{% include related.html %}`{% endraw %} where related posts should appear.
-4. Copy the `related-post.html` file into your _includes directory - modifying it to output a link for each related document. Alternatively set the `related_template` setting in `_config.yml` with an alternative include file - for example `archive-single.html` if you use the [Minimal Mistakes](https://mmistakes.github.io/minimal-mistakes/) theme.
+1. Modify your `_config.yml` file to include `related_by`, `related_categories` and/or `related_tags` values. See below for available settings.
+1. Update the `_layout` used to include related posts to {% raw %}`{% include related.html %}`{% endraw %} where related posts should appear.
+1. Copy the `related-post.html` file into your _includes directory - modifying it to output a link for each related document. Alternatively set the `related_template` setting in `_config.yml` with an alternative include file - for example `archive-single.html` if you use the [Minimal Mistakes](https://mmistakes.github.io/minimal-mistakes/) theme.
 
 ## Settings
 
